@@ -65,7 +65,7 @@ public class LogicsImpl implements Logics {
      */
     @Override
     public int hit(final int elem) {
-        int value = this.listValues.get(elem) + 1;
+        final int value = this.listValues.get(elem) + 1;
         this.listValues.set(elem, value);
         return value;
     }
@@ -78,12 +78,21 @@ public class LogicsImpl implements Logics {
         if (this.toQuit()) {
             return "";
         } 
-        String state = "<<";
-        for (int i : listValues) {
+        /* String state = "<<";
+        for (final int i : listValues) {
             state += String.valueOf(i) + "|";
         }
         state += ">>";
-        return state;
+        return state; */
+
+        final StringBuilder sBuilder = new StringBuilder("<<");
+        for (final int i : listValues) {
+            final String s = String.valueOf(i + "|");
+            sBuilder.append(s);
+        }
+        sBuilder.append(">>");
+        return sBuilder.toString();
+
     }
 
     /**

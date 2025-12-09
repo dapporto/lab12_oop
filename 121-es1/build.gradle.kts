@@ -12,6 +12,12 @@ dependencies {
     compileOnly("com.github.spotbugs:spotbugs-annotations:4.9.8")
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
 application {
     mainClass.set("it.unibo.es1.Test")
 }
