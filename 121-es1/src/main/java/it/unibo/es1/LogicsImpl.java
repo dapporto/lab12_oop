@@ -1,13 +1,18 @@
 package it.unibo.es1;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Implementation of the Logics interface.
  */
 public class LogicsImpl implements Logics {
 
-    private static final String ERROR_MESSAGE = "Unimplemented method";
+    // private static final String ERROR_MESSAGE = "Unimplemented method";
+    private static final int START_VALUE = 0;
+    private static final int SINGLE_ELEM = 1;
+    private final List<Integer> listValues = new ArrayList<>();
 
     /**
      * Constructor.
@@ -15,7 +20,9 @@ public class LogicsImpl implements Logics {
      * @param size the size of the logics
      */
     public LogicsImpl(final int size) {
-        throw new UnsupportedOperationException(ERROR_MESSAGE);
+        for (int i = 0; i < size; i++) {
+            listValues.add(START_VALUE);
+        }
     }
 
     /**
@@ -23,7 +30,7 @@ public class LogicsImpl implements Logics {
      */
     @Override
     public int size() {
-        throw new UnsupportedOperationException(ERROR_MESSAGE);
+        return listValues.size();
     }
 
     /**
@@ -31,7 +38,7 @@ public class LogicsImpl implements Logics {
      */
     @Override
     public List<Integer> values() {
-        throw new UnsupportedOperationException(ERROR_MESSAGE);
+        return new ArrayList<>(listValues);
     }
 
     /**
@@ -39,7 +46,18 @@ public class LogicsImpl implements Logics {
      */
     @Override
     public List<Boolean> enabledStates() {
-        throw new UnsupportedOperationException(ERROR_MESSAGE);
+        /* final List<Boolean> booleansList = new ArrayList<>();
+        for (int i : listValues) {
+            if (i < listValues.size()) {
+                booleansList.add(true);
+            } else {
+                booleansList.add(false);
+            }
+        }
+        return booleansList; */
+        return listValues.stream()
+            .map(e -> e < listValues.size())
+            .collect(Collectors.toList());
     }
 
     /**
@@ -47,7 +65,9 @@ public class LogicsImpl implements Logics {
      */
     @Override
     public int hit(final int elem) {
-        throw new UnsupportedOperationException(ERROR_MESSAGE);
+        int value = this.listValues.get(elem) + 1;
+        this.listValues.set(elem, value);
+        return value;
     }
 
     /**
@@ -55,7 +75,15 @@ public class LogicsImpl implements Logics {
      */
     @Override
     public String result() {
-        throw new UnsupportedOperationException(ERROR_MESSAGE);
+        if (this.toQuit()) {
+            return "";
+        } 
+        String state = "<<";
+        for (int i : listValues) {
+            state += String.valueOf(i) + "|";
+        }
+        state += ">>";
+        return state;
     }
 
     /**
@@ -63,6 +91,8 @@ public class LogicsImpl implements Logics {
      */
     @Override
     public boolean toQuit() {
-        throw new UnsupportedOperationException(ERROR_MESSAGE);
+        return SINGLE_ELEM == Math.toIntExact(this.listValues.stream()
+            .distinct()
+            .count());
     }
 }
